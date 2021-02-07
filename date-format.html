@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CrossKnowledge - Code challenge</title>
+</head>
+<body>
+  <script>
+
+    // This will create elements for testing, DO NOT change this code
+    (() => {
+      const MS_PER_MINUTE = 60000
+      const NOW = new Date()
+      let minutes = [0, 1, 30, 60, 6 * 60, 23 * 60, 24 * 60]
+      let dates = []
+
+      minutes.forEach((i) => dates.push(new Date(NOW - i * MS_PER_MINUTE)))
+
+      dates.forEach((item) => {
+        let el = document.createElement("div")
+        el.innerHTML = "Started "
+
+        let dt = document.createElement('span')
+        dt.className = 'js-date-format'
+        dt.innerHTML = item.toISOString();
+        el.appendChild(dt)
+        document.body.appendChild(el)
+      })
+    })();
+    
+    function dateFormatting(date) {
+        date = new Date(date).getTime();
+        var now = new Date(),
+        date = new Date(date),
+        timeDiff = (now - date);
+    
+        const secondsToDay = 60 * 60 * 1000 * 24;
+        const secondsToHour = 60 * 60 * 1000;
+    
+        hours = Math.floor((timeDiff % (secondsToDay)) / (secondsToHour) * 1);
+        minutes = Math.floor(((timeDiff % (secondsToDay)) % (secondsToHour)) / (60 * 1000) * 1);
+        seconds = Math.floor((((timeDiff % (secondsToDay)) % (secondsToHour)) % (60 * 1000)) / 1000 * 1);
+
+        document.getElementById("hours").innerHTML = `${hours} ${(hours > 1) ? `hours` : `hour` } ago`;
+        document.getElementById("minutes").innerHTML = `${minutes} ${(minutes > 1) ? `minutes` : `minute` } ago`;
+        document.getElementById("seconds").innerHTML = `${seconds} ${(seconds > 1) ? `seconds` : `second` } ago`;
+
+        clearTimeout(dateFormatting.interval);
+
+        dateFormatting.interval = setTimeout(function(){ 
+            dateFormatting(date); 
+        }, 1000);
+    }
+
+    window.onload = function() {
+        const date = "2021-02-07T04:38:47.486Z"; //paste your date here
+        dateFormatting(date);
+        document.getElementById("dateIso").innerHTML = date;
+    };
+
+  </script>
+  <ul>
+      <li id="seconds"></li>
+      <li id="minutes"></li>
+      <li id="hours"></li>
+      <li id="dateIso"></li>
+  </ul>
+</body>
+</html>
